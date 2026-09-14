@@ -1,0 +1,62 @@
+# ============================================
+# ARQUIVOS SENSÍVEIS - NÃO ENVIAR PARA GITHUB
+# ============================================
+
+# Credenciais e tokens
+.env
+auth.json
+auth.lock
+*.key
+*.pem
+
+# Banco de dados (contém dados de sessão)
+state.db
+state.db-shm
+state.db-wal
+state.db.auto-maintenance.lock
+state.db.fts_rebuild.lock
+state.db.quarantine.lock
+
+# Cache de modelos
+models_dev_cache.json
+models_dev_cache.etag
+ollama_cloud_models_cache.json
+provider_models_cache.json
+
+# Sessões e memórias (originais - NÃO enviar)
+sessions/
+memories/
+*.log
+
+# Cache e temporários
+cache/
+audio_cache/
+image_cache/
+backups/
+hooks/
+pairing/
+terminal-sessions/
+sandbox*/
+sandboxes/
+
+# Arquivos de sistema
+.Herme*
+.hermes_history
+.update_check
+*.lock
+
+# Node modules (se houver)
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# ============================================
+# PERMITIDO ENVIAR (backups de memória)
+# ============================================
+# memory-backup/          ← PODE ENVIAR (contém backup seguro)
+# hermes-memory-backup_*.tar.gz  ← PODE ENVIAR
