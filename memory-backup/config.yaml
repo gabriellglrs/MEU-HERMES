@@ -113,6 +113,7 @@ stt:
 
 # ── Memória (Expandida) ─────────────────────────────────────────────
 memory:
+  provider: honcho
   memory_enabled: true
   user_profile_enabled: true
   memory_char_limit: 5000
