@@ -1,7 +1,7 @@
 {
-  "timestamp": "20260913_234833",
-  "hermes_version": "Hermes Agent v0.21.2 (2026.9.11) · upstream ee445299",
-  "hostname": "linux",
-  "user": "gabriel",
-  "description": "Backup da memória do Hermes Agent"
+  "hostname": "INSS-PE02L9NU",
+  "description": "Backup da memoria do Hermes Agent",
+  "hermes_version": "Hermes Agent v0.21.2 (2026.9.11) ┬À upstream 916ef1e0",
+  "user": "GABRIELLUCASRODRIGUE",
+  "timestamp": "20260914_133431"
 }

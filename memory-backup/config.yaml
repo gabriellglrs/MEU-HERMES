@@ -1,11 +1,25 @@
+# ============================================
+# Configuração Otimizada - MEU-HERMES
+# ============================================
+# Assistente completo para cybersegurança,
+# programação, Linux e automação diária
+# ============================================
+
+# ── Modelo Principal ──────────────────────────────────────────────────
 model:
-  default: nvidia/nemotron-3-super-120b-a12b:free
-  provider: openrouter
-  base_url: https://openrouter.ai/api/v1
+  default: gpt-oss:120b
+  provider: ollama-cloud
+  base_url: https://ollama.com/v1
+
+# ── Banco de Dados ───────────────────────────────────────────────────
 database:
   journal_mode: wal
+
+# ── Runtime ──────────────────────────────────────────────────────────
 runtime:
   nofile_soft_limit: 4096
+
+# ── Agente ───────────────────────────────────────────────────────────
 agent:
   max_turns: 500
   service_tier: ''
@@ -13,21 +27,27 @@ agent:
   verbose: false
   reasoning_effort: medium
   personalities: {}
+
+# ── Terminal ─────────────────────────────────────────────────────────
 terminal:
   backend: local
   cwd: .
-  timeout: 180
+  timeout: 300
   home_mode: auto
-  container_cpu: 1
-  container_memory: 5120
-  container_disk: 51200
+  container_cpu: 2
+  container_memory: 8192
+  container_disk: 100000
   container_persistent: true
   docker_mount_cwd_to_workspace: false
-  lifetime_seconds: 300
+  lifetime_seconds: 600
+
+# ── Browser ──────────────────────────────────────────────────────────
 browser:
   inactivity_timeout: 120
   extension_control:
     enabled: false
+
+# ── Tool Loop Guardrails ─────────────────────────────────────────────
 tool_loop_guardrails:
   warnings_enabled: true
   hard_stop_enabled: false
@@ -40,6 +60,8 @@ tool_loop_guardrails:
     exact_failure: 5
     same_tool_failure: 8
     idempotent_no_progress: 5
+
+# ── Compressão ───────────────────────────────────────────────────────
 compression:
   enabled: true
   checkpoint_required: false
@@ -58,8 +80,12 @@ compression:
   codex_app_server_auto: native
   codex_responses_native: false
   idle_compact_after_seconds: 0
+
+# ── Cache de Prompt ──────────────────────────────────────────────────
 prompt_caching:
   cache_ttl: 5m
+
+# ── Display ──────────────────────────────────────────────────────────
 display:
   compact: false
   busy_input_mode: interrupt
@@ -74,38 +100,69 @@ display:
   cleanup_progress: false
   long_running_notifications: true
   busy_ack_detail: true
+
+# ── Speech-to-Text ──────────────────────────────────────────────────
 stt:
   enabled: true
-  language: en
+  language: pt
   local:
     model: base
   openai:
     model: whisper-1
-    language: ''
+    language: 'pt'
+
+# ── Memória (Expandida) ─────────────────────────────────────────────
 memory:
   memory_enabled: true
   user_profile_enabled: true
-  memory_char_limit: 2200
-  user_char_limit: 1375
+  memory_char_limit: 5000
+  user_char_limit: 2000
   nudge_interval: 10
+
+# ── Delegação (Paralela) ────────────────────────────────────────────
 delegation:
   max_iterations: 250
+  max_concurrent_children: 3
+  max_spawn_depth: 2
+  orchestrator_enabled: true
+
+# ── Skills ───────────────────────────────────────────────────────────
 skills:
   creation_nudge_interval: 15
+  write_approval: false
+  guard_agent_created: false
+
+# ── Plugins ──────────────────────────────────────────────────────────
 plugins:
   enabled:
     - opencode
+    - rtk-rewrite
   disabled: []
   entries:
     opencode:
       allow_tool_override: false
+
+# ── Cron ─────────────────────────────────────────────────────────────
 cron:
   catch_up_missed: true
+
+# ── Kanban ───────────────────────────────────────────────────────────
 kanban:
   review_dispatch: true
+
+# ── Execução de Código ──────────────────────────────────────────────
 code_execution:
   timeout: 300
   max_tool_calls: 50
+
+# ── Web Search & Extract ────────────────────────────────────────────
+web:
+  search_backend: "searxng"
+  extract_backend: "firecrawl"
+  keyless_fallback: true
+  keyless_rescue: true
+
+# ── Gateway ──────────────────────────────────────────────────────────
 gateway:
   signal_interrupt_grace_timeout: 1
   delivery_ledger: true
@@ -144,18 +201,41 @@ gateway:
   trust_recent_files_seconds: 600
   api_server:
     max_concurrent_runs: 10
+
+# ── Streaming ────────────────────────────────────────────────────────
 streaming:
   enabled: false
+
+# ── Telemetry ────────────────────────────────────────────────────────
 telemetry:
   shared_metrics:
     enabled: false
     send: false
+
+# ── Updates ──────────────────────────────────────────────────────────
 updates:
   check: true
   pre_update_backup: false
   backup_keep: 5
   non_interactive_local_changes: stash
+
+# ── Segurança ────────────────────────────────────────────────────────
+security:
+  redact_secrets: true
+  tirith_enabled: true
+  tirith_timeout: 5
+  tirith_fail_open: true
+
+# ── Fallback Model (Opcional) ────────────────────────────────────────
+# Descomente para habilitar failover automático
+# fallback_model:
+#   provider: openrouter
+#   model: anthropic/claude-sonnet-4
+
+# ── Config Version ──────────────────────────────────────────────────
 _config_version: 44
+
+# ── Platform Toolsets ───────────────────────────────────────────────
 group_sessions_per_user: true
 platform_toolsets:
   cli:
@@ -180,41 +260,3 @@ platform_toolsets:
     - hermes-teams
   google_chat:
     - hermes-google_chat
-
-# ── Security ──────────────────────────────────────────────────────────
-# Secret redaction is ON by default — strings that look like API keys,
-# tokens, and passwords are masked in tool output, logs, and chat
-# responses before the model or user ever sees them. Set redact_secrets
-# to false to disable (e.g. when developing the redactor itself).
-# tirith pre-exec scanning is enabled by default when the tirith binary
-# is available. Configure via security.tirith_* keys or env vars
-# (TIRITH_ENABLED, TIRITH_BIN, TIRITH_TIMEOUT, TIRITH_FAIL_OPEN).
-#
-# security:
-#   redact_secrets: true
-#   tirith_enabled: true
-#   tirith_path: "tirith"
-#   tirith_timeout: 5
-#   tirith_fail_open: true
-
-# ── Fallback Model ────────────────────────────────────────────────────
-# Automatic provider failover when primary is unavailable.
-# Uncomment and configure to enable. Triggers on rate limits (429),
-# overload (529), service errors (503), or connection failures.
-#
-# Supported providers:
-#   openrouter   (OPENROUTER_API_KEY)  — routes to any model
-#   openai-codex (OAuth — hermes auth) — OpenAI Codex
-#   nous         (OAuth — hermes auth) — Nous Portal
-#   zai          (ZAI_API_KEY)         — Z.AI / GLM
-#   kimi-coding  (KIMI_API_KEY)        — Kimi / Moonshot
-#   kimi-coding-cn (KIMI_CN_API_KEY)   — Kimi / Moonshot (China)
-#   minimax      (MINIMAX_API_KEY)     — MiniMax
-#   minimax-cn   (MINIMAX_CN_API_KEY)  — MiniMax (China)
-#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
-#
-# For custom OpenAI-compatible endpoints, add base_url and key_env.
-#
-# fallback_model:
-#   provider: openrouter
-#   model: anthropic/claude-sonnet-4
