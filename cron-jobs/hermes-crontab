@@ -1,0 +1,38 @@
+# ============================================
+# Cron Jobs - MEU-HERMES
+# ============================================
+# Automações diárias para o Hermes
+# Instalar: crontab cron-jobs/hermes-crontab
+# ============================================
+
+# ── Briefing Matinal (8h da manhã) ──────────────────────────────────
+# Executa verificação completa do sistema
+0 8 * * * ~/.hermes/scripts/daily-briefing.sh > ~/.hermes/logs/daily-briefing-$(date +\%Y\%m\%d).log 2>&1
+
+# ── Monitoramento (a cada 30 minutos) ───────────────────────────────
+# Verifica serviços críticos
+*/30 * * * * ~/.hermes/scripts/monitor-system.sh --once > ~/.hermes/logs/monitor.log 2>&1
+
+# ── Backup de Configurações (2h da manhã) ──────────────────────────
+# Backup automático das configurações
+0 2 * * * ~/.hermes/scripts/backup-configs.sh ~/backups/configs/ > ~/.hermes/logs/backup.log 2>&1
+
+# ── Limpeza do Sistema (3h da manhã, domingo) ──────────────────────
+# Limpa cache, logs antigos e pacotes órfãos
+0 3 * * 0 ~/.hermes/scripts/cleanup-system.sh > ~/.hermes/logs/cleanup.log 2>&1
+
+# ── Verificação de Segurança (6h da manhã) ─────────────────────────
+# Verifica portas, logins falhos e atualizações
+0 6 * * * ~/.hermes/scripts/security-check.sh > ~/.hermes/logs/security.log 2>&1
+
+# ── Atualização do Sistema (4h da manhã, terça) ────────────────────
+# Verifica e instala updates de segurança
+0 4 * * 2 sudo apt-get update && sudo apt-get upgrade -y > ~/.hermes/logs/update.log 2>&1
+
+# ── Backup do Repositório MEU-HERMES (22h) ─────────────────────────
+# Envia alterações para o GitHub
+0 22 * * * cd ~/MEU-HERMES && git add . && git commit -m "backup: $(date +\%Y-\%m-\%d)" && git push > ~/.hermes/logs/git-backup.log 2>&1
+
+# ── Verificação de Logs de Erro (a cada hora) ──────────────────────
+# Alerta se houver muitos erros
+0 * * * * journalctl --since "1 hour ago" -p err --no-pager -q | wc -l > ~/.hermes/logs/error-count.log 2>&1

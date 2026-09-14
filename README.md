@@ -4,9 +4,11 @@ Configuração personalizada do [Hermes Agent](https://github.com/NousResearch/h
 
 ## O que está incluído
 
-- `config.yaml` - Configurações do Hermes
-- `SOUL.md` - Personalidade do agente
-- `skills/` - Skills instaladas e criadas
+- `config.yaml` - Configurações otimizadas do Hermes
+- `SOUL.md` - Personalidade completa (cybersegurança, programação, Linux)
+- `skills/cybersecurity/` - 2,077 skills de cybersegurança
+- `scripts/` - Scripts de automação diária
+- `cron-jobs/` - Configurações de automação
 - `plugins/opencode/` - Plugin de integração com OpenCode
 - `memory-backup/` - Backup da memória do agente
 
@@ -41,11 +43,11 @@ git clone https://github.com/gabriellglrs/MEU-HERMES.git
 cd MEU-HERMES
 ```
 
-### Passo 3: Restaurar configuração e memória
+### Passo 3: Executar instalação automática
 
 ```bash
-# Restaurar tudo (configuração + memória + skills)
-./restore-memory.sh
+# Instalar tudo automaticamente
+./install.sh
 ```
 
 Ou manualmente:
@@ -55,8 +57,17 @@ Ou manualmente:
 cp config.yaml ~/.hermes/
 cp SOUL.md ~/.hermes/
 
-# Copiar skills
+# Copiar skills de cybersegurança
 cp -r skills/* ~/.hermes/skills/
+
+# Copiar scripts de automação
+mkdir -p ~/.hermes/scripts
+cp scripts/* ~/.hermes/scripts/
+chmod +x ~/.hermes/scripts/*.sh
+
+# Copiar cron jobs
+mkdir -p ~/.hermes/cron-jobs
+cp cron-jobs/* ~/.hermes/cron-jobs/
 
 # Copiar plugin opencode
 mkdir -p ~/.hermes/plugins
@@ -127,12 +138,176 @@ hermes plugins enable opencode
 hermes plugins list
 ```
 
-### Passo 8: Reiniciar Hermes
+### Passo 8: Instalar Cron Jobs (Opcional)
+
+```bash
+# Instalar automações
+crontab cron-jobs/hermes-crontab
+
+# Verificar se foi instalado
+crontab -l
+```
+
+### Passo 9: Reiniciar Hermes
 
 ```bash
 # Iniciar Hermes
 hermes
 ```
+
+---
+
+## 🛡️ Cybersegurança
+
+### Ecossistema Completo
+
+O MEU-HERMES inclui o **hermes-cybersec-lab** com:
+
+- **2,077 skills** de cybersegurança
+- **131+ ferramentas** de segurança
+- **28 frameworks** (MITRE ATT&CK, OWASP, etc.)
+
+### Domínios Cobertos
+
+| Domínio | Skills |
+|---------|--------|
+| Malware Analysis & Reverse Engineering | 34 |
+| Forensics & DFIR | 22 |
+| Exploitation & Post-Exploitation | 40 |
+| Threat Intelligence | 32 |
+| Vulnerability Management | 22 |
+| Cloud Security | 18 |
+| Web Application Security | 30 |
+| API Security | 22 |
+| OSINT & Reconnaissance | 20 |
+
+### Ferramentas Incluídas
+
+- **Rede:** nmap, masscan, tcpdump, tshark, naabu, amass, subfinder
+- **Exploitation:** metasploit, sqlmap, impacket, crackmapexec
+- **Malware:** radare2, gdb, ghidra, yara, oletools
+- **Web:** zaproxy, nikto, ffuf, dirsearch
+- **Cloud:** scoutsuite, prowler, kube-hunter
+
+### Exemplos de Uso
+
+```
+"Escaneie minha rede local e identifique dispositivos"
+"Analise este malware: /tmp/samples/malware.exe"
+"Pesquise CVEs recentes de SQL injection"
+"Crie um relatório de vulnerabilidades"
+```
+
+---
+
+## 💻 Programação
+
+### Skills de Desenvolvimento
+
+- **opencode-driven-development** - Delegar código ao opencode
+- **systematic-debugging** - Debug sistemático
+- **test-driven-development** - TDD
+- **github** - Gestão de repos
+- **codebase-inspection** - Inspeção de código
+- **requesting-code-review** - Reviews
+
+### Integração OpenCode
+
+```bash
+# Tarefa simples (fire-and-forget)
+opencode(action="run", prompt="Criar script de backup")
+
+# Tarefa complexa (multi-turn)
+opencode(action="session", prompt="Implementar sistema de login")
+
+# Usar agentes específicos
+opencode(action="run", prompt="...", agent="hephaestus")
+opencode(action="run", prompt="...", agent="prometheus")
+```
+
+### Exemplos de Uso
+
+```
+"Revise este script Python para vulnerabilidades"
+"Implemente autenticação OAuth no meu projeto"
+"Delegue para opencode: criar API REST em Go"
+```
+
+---
+
+## 🖥️ Automação Linux
+
+### Scripts Disponíveis
+
+| Script | Função |
+|--------|--------|
+| `daily-briefing.sh` | Briefing matinal completo |
+| `monitor-system.sh` | Monitoramento em tempo real |
+| `backup-configs.sh` | Backup de configurações |
+| `cleanup-system.sh` | Limpeza do sistema |
+| `security-check.sh` | Verificação de segurança |
+
+### Uso dos Scripts
+
+```bash
+# Briefing matinal
+~/.hermes/scripts/daily-briefing.sh
+
+# Monitoramento em tempo real
+~/.hermes/scripts/monitor-system.sh 5
+
+# Backup de configurações
+~/.hermes/scripts/backup-configs.sh ~/backups/
+
+# Limpeza do sistema
+~/.hermes/scripts/cleanup-system.sh
+
+# Verificação de segurança
+~/.hermes/scripts/security-check.sh
+```
+
+### Cron Jobs Automáticos
+
+| Horário | Tarefa |
+|---------|--------|
+| 08:00 diário | Briefing matinal |
+| a cada 30min | Monitoramento de serviços |
+| 02:00 diário | Backup de configurações |
+| 03:00 domingo | Limpeza do sistema |
+| 06:00 diário | Verificação de segurança |
+| 04:00 terça | Atualização do sistema |
+| 22:00 diário | Backup do repositório |
+
+### Exemplos de Uso
+
+```
+"Execute o briefing matinal"
+"Monitore o sistema em tempo real"
+"Faça backup das configurações"
+"Limpe o sistema"
+"Verifique a segurança do sistema"
+```
+
+---
+
+## 📚 Pesquisa & Estudos
+
+### Web Search
+
+O Hermes possui web search integrado para pesquisas:
+
+```
+"Pesquise últimos CVEs de SQL injection"
+"Encontre papers recentes sobre IA em cybersegurança"
+"Busque documentação sobre Docker security"
+```
+
+### Skills de Pesquisa
+
+- **arxiv** - Buscar papers acadêmicos
+- **grounded-citations** - Citações fundamentadas
+- **llm-wiki** - Consulta wiki
+- **research** - Pesquisa geral
 
 ---
 
@@ -211,6 +386,9 @@ hermes skills list
 
 # Instalar skill do hub
 hermes skills install <nome>
+
+# Buscar skills
+hermes skills search <termo>
 ```
 
 ### Backup e restauração
@@ -381,6 +559,16 @@ hermes doctor
 curl -fsSL https://hermes.ai/install.sh | bash
 ```
 
+### Scripts não executam
+
+```bash
+# Verificar permissões
+ls -la ~/.hermes/scripts/
+
+# Dar permissão de execução
+chmod +x ~/.hermes/scripts/*.sh
+```
+
 ---
 
 ## 📁 Estrutura do Repositório
@@ -389,27 +577,28 @@ curl -fsSL https://hermes.ai/install.sh | bash
 MEU-HERMES/
 ├── .gitignore              # Arquivos excluídos do versionamento
 ├── README.md               # Este arquivo
-├── config.yaml             # Configurações do Hermes
-├── SOUL.md                 # Personalidade do agente
+├── config.yaml             # Configurações otimizadas do Hermes
+├── SOUL.md                 # Personalidade completa do agente
 ├── install.sh              # Script de instalação rápida
 ├── backup-memory.sh        # Script de backup da memória
 ├── restore-memory.sh       # Script de restauração
+├── skills/                 # Skills instaladas
+│   └── cybersecurity/      # 2,077 skills de cybersegurança
+├── scripts/                # Scripts de automação
+│   ├── daily-briefing.sh   # Briefing matinal
+│   ├── monitor-system.sh   # Monitoramento
+│   ├── backup-configs.sh   # Backup de configs
+│   ├── cleanup-system.sh   # Limpeza do sistema
+│   ├── security-check.sh   # Verificação de segurança
+│   └── README.md           # Documentação dos scripts
+├── cron-jobs/              # Configurações de automação
+│   └── hermes-crontab      # Cron jobs automáticos
 ├── memory-backup/          # Backup da memória
 │   ├── SOUL.md
 │   ├── config.yaml
 │   ├── sessions_*.jsonl
 │   ├── skills/
 │   └── metadata.json
-├── skills/                 # Skills instaladas
-│   ├── autonomous-ai-agents/
-│   ├── creative/
-│   ├── devops/
-│   ├── email/
-│   ├── media/
-│   ├── productivity/
-│   ├── research/
-│   ├── software-development/
-│   └── web/
 └── plugins/                # Plugins
     └── opencode/           # Plugin OpenCode
 ```
@@ -436,6 +625,8 @@ MEU-HERMES/
 | `SOUL.md` | Personalidade do agente |
 | `skills/` | Skills instaladas |
 | `plugins/` | Plugins instalados |
+| `scripts/` | Scripts de automação |
+| `cron-jobs/` | Configurações de automação |
 | `memory-backup/` | Backup da memória |
 
 ---
@@ -447,6 +638,7 @@ MEU-HERMES/
 - [OpenCode - Site](https://opencode.ai)
 - [OpenCode - GitHub](https://github.com/sst/opencode)
 - [oh-my-openagent (OMO)](https://github.com/code-yeongyu/oh-my-openagent)
+- [hermes-cybersec-lab](https://github.com/handnewb/hermes-cybersec-lab)
 - [Hermes Discord](https://discord.gg/hermes)
 - [OpenCode Discord](https://discord.gg/opencode)
 
