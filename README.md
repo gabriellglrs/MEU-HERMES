@@ -765,6 +765,8 @@ MEU-HERMES/
 ├── README.md               # Este arquivo
 ├── config.yaml             # Configurações otimizadas do Hermes
 ├── SOUL.md                 # Personalidade completa do agente
+├── honcho.json             # Configuração do Honcho (memória cross-session)
+├── rtk-config.toml         # Configuração do RTK (economia de tokens)
 ├── install.sh              # Script de instalação rápida
 ├── backup-memory.sh        # Script de backup da memória
 ├── restore-memory.sh       # Script de restauração
@@ -813,6 +815,8 @@ MEU-HERMES/
 |---------|----------|
 | `config.yaml` | Configurações (sem chaves) |
 | `SOUL.md` | Personalidade do agente |
+| `honcho.json` | Configuração do Honcho (API key incluída) |
+| `rtk-config.toml` | Configuração do RTK |
 | `skills/` | Skills instaladas |
 | `plugins/` | Plugins instalados |
 | `scripts/` | Scripts de automação |
