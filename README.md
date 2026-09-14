@@ -7,6 +7,7 @@ Configuração personalizada do [Hermes Agent](https://github.com/NousResearch/h
 - `config.yaml` - Configurações otimizadas do Hermes
 - `SOUL.md` - Personalidade completa (cybersegurança, programação, Linux)
 - `skills/cybersecurity/` - 2,077 skills de cybersegurança
+- `skills/software-development/gsd-core/` - Skill do GSD Core
 - `scripts/` - Scripts de automação diária
 - `cron-jobs/` - Configurações de automação
 - `plugins/opencode/` - Plugin de integração com OpenCode
@@ -231,6 +232,85 @@ opencode(action="run", prompt="...", agent="prometheus")
 "Revise este script Python para vulnerabilidades"
 "Implemente autenticação OAuth no meu projeto"
 "Delegue para opencode: criar API REST em Go"
+```
+
+---
+
+## 🛠️ GSD Core (Engenharia de Contexto)
+
+O MEU-HERMES inclui suporte ao **GSD Core** para desenvolvimento orientado a especificações com engenharia de contexto avançada.
+
+### O que é?
+
+GSD Core é um framework que resolve **context rot** — a degradação de qualidade que se acumula quando a IA preenche sua janela de contexto. Ele executa trabalho pesado em subagentes com contexto limpo.
+
+### Ciclo de Fases
+
+1. **Discuss** — Capturar decisões antes do planejamento
+2. **Plan** — Pesquisa e verifica se o plano cabe no contexto
+3. **Execute** — Roda planos em paralelo com contexto limpo
+4. **Verify** — Verifica o que foi construído
+5. **Ship** — Cria PR e arquiva a fase
+
+### Instalação
+
+```bash
+# O GSD Core já está instalado globalmente para OpenCode
+# Para verificar:
+ls -la ~/.config/opencode/skills/ | grep gsd
+
+# Para reinstalar se necessário:
+npx @opengsd/gsd-core@latest --opencode --global
+```
+
+### Comandos disponíveis
+
+| Comando | Função |
+|---------|--------|
+| `/gsd-new-project` | Iniciar novo projeto greenfield |
+| `/gsd-onboard` | Integrar repositório existente |
+| `/gsd-health` | Verificar saúde do projeto |
+| `/gsd-config` | Configurar GSD Core |
+| `/gsd-discuss-phase` | Iniciar discussão de uma fase |
+| `/gsd-execute-phase` | Executar uma fase |
+| `/gsd-verify-phase` | Verificar uma fase concluída |
+| `/gsd-complete-milestone` | Completar um milestone |
+
+### Quando usar
+
+- **Projetos grandes e complexos** — Muitas partes interdependentes
+- **Contexto ficando grande** — Sessão ficando lenta
+- **Qualidade consistente** — Resultados previsíveis
+- **Teams** — Múltiplas pessoas no mesmo código
+- **Código crítico** — Bugs com alto custo
+
+### Exemplo de uso
+
+```bash
+# Para novo projeto
+cd ~/projects
+mkdir minha-api
+cd minha-api
+git init
+opencode
+# Dentro do OpenCode: /gsd-new-project
+
+# Para projeto existente
+cd ~/meu-repositorio
+opencode
+# Dentro do OpenCode: /gsd-onboard
+```
+
+### Estrutura de arquivos
+
+```
+meu-projeto/
+├── STATE.md           # Estado atual do projeto
+├── CONTEXT.md         # Contexto do projeto
+├── .gsd/              # Diretório do GSD Core
+│   └── phase/         # Fases em andamento
+├── docs/              # Documentação
+└── src/               # Código fonte
 ```
 
 ---
