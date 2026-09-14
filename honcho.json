@@ -1,0 +1,20 @@
+{
+  "apiKey": "hch-v3-sj3y3mnd8hld1ntbp4vhtkcxe623thdlzguev99ppkeuwxq5ryt9jxsvs451l27s",
+  "peerName": "gabriellucas",
+  "aiPeer": "hermes",
+  "workspace": "hermes",
+  "recallMode": "hybrid",
+  "observation": {
+    "user": { "observeMe": true, "observeOthers": true },
+    "ai": { "observeMe": true, "observeOthers": true }
+  },
+  "writeFrequency": "async",
+  "sessionStrategy": "per-directory",
+  "dialecticReasoningLevel": "low",
+  "dialecticDynamic": true,
+  "dialecticDepth": 1,
+  "injectionFrequency": "every-turn",
+  "contextCadence": 1,
+  "dialecticCadence": 2,
+  "messageMaxChars": 25000
+}
