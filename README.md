@@ -7,7 +7,10 @@ Configuração personalizada do [Hermes Agent](https://github.com/NousResearch/h
 - `config.yaml` - Configurações otimizadas do Hermes
 - `SOUL.md` - Personalidade completa (cybersegurança, programação, Linux)
 - `skills/cybersecurity/` - 2,077 skills de cybersegurança
+- `skills/nousresearch/` - 14 skills do ecossistema NousResearch
+- `skills/obra/` - Skills de workflow (using-superpowers)
 - `skills/software-development/gsd-core/` - Skill do GSD Core
+- `skills/rtk/` - RTK Token Killer (economia de tokens)
 - `scripts/` - Scripts de automação diária
 - `cron-jobs/` - Configurações de automação
 - `plugins/opencode/` - Plugin de integração com OpenCode
@@ -25,6 +28,7 @@ Configuração personalizada do [Hermes Agent](https://github.com/NousResearch/h
 | Node.js | 18+ | `node --version` |
 | npm | 9+ | `npm --version` |
 | Git | 2.0+ | `git --version` |
+| Rust | latest | `rustc --version` (para RTK) |
 
 ### Passo 1: Instalar Hermes Agent
 
@@ -58,7 +62,7 @@ Ou manualmente:
 cp config.yaml ~/.hermes/
 cp SOUL.md ~/.hermes/
 
-# Copiar skills de cybersegurança
+# Copiar skills
 cp -r skills/* ~/.hermes/skills/
 
 # Copiar scripts de automação
@@ -96,6 +100,17 @@ GOOGLE_API_KEY=xxx
 
 # OpenRouter (acesso a vários modelos)
 OPENROUTER_API_KEY=sk-or-xxx
+
+# Honcho (memória cross-session)
+HONCHO_API_KEY=xxx
+
+# 1Password (gerenciamento de secrets)
+OP_SERVICE_ACCOUNT_TOKEN=xxx
+
+# Microsoft Graph (Teams meetings)
+MSGRAPH_TENANT_ID=xxx
+MSGRAPH_CLIENT_ID=xxx
+MSGRAPH_CLIENT_SECRET=xxx
 
 # Outras chaves conforme necessário
 ```
@@ -139,7 +154,31 @@ hermes plugins enable opencode
 hermes plugins list
 ```
 
-### Passo 8: Instalar Cron Jobs (Opcional)
+### Passo 8: Instalar RTK (opcional - economia de tokens)
+
+```bash
+# Windows
+winget install rtk-ai.rtk
+
+# macOS/Linux
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+
+# Verificar
+rtk --version
+
+# Ativar hook global (opcional)
+rtk init -g --agent hermes
+```
+
+### Passo 9: Configurar Honcho (memória)
+
+```bash
+# Configurar Honcho
+hermes memory setup honcho
+# Escolher "cloud" ou "local" e seguir o wizard
+```
+
+### Passo 10: Instalar Cron Jobs (Opcional)
 
 ```bash
 # Instalar automações
@@ -149,12 +188,27 @@ crontab cron-jobs/hermes-crontab
 crontab -l
 ```
 
-### Passo 9: Reiniciar Hermes
+### Passo 11: Reiniciar Hermes
 
 ```bash
 # Iniciar Hermes
 hermes
 ```
+
+---
+
+## 🧠 Skills Instaladas
+
+### Visão Geral
+
+| Categoria | Skills | Descrição |
+|-----------|--------|-----------|
+| **Cybersecurity Lab** | 2,077 | Análise de malware, forense, pentesting, ameaças |
+| **NousResearch** | 14 | Workflow, debug, APIs, memória, email, vídeo |
+| **Obra** | 1 | Ativação sob demanda de skills |
+| **Software Development** | 1 | Engenharia de contexto (GSD Core) |
+| **RTK** | 1 | Economia de tokens (60-90%) |
+| **Total** | **2,094** | |
 
 ---
 
@@ -172,15 +226,20 @@ O MEU-HERMES inclui o **hermes-cybersec-lab** com:
 
 | Domínio | Skills |
 |---------|--------|
-| Malware Analysis & Reverse Engineering | 34 |
-| Forensics & DFIR | 22 |
-| Exploitation & Post-Exploitation | 40 |
-| Threat Intelligence | 32 |
-| Vulnerability Management | 22 |
-| Cloud Security | 18 |
-| Web Application Security | 30 |
-| API Security | 22 |
-| OSINT & Reconnaissance | 20 |
+| AI/LLM Security | 20 |
+| API Security | 10 |
+| Cloud Security Advanced | 8 |
+| CVE 2015-2017 | 30 |
+| CVE 2018-2020 | 30 |
+| CVE 2021-2023 | 30 |
+| CVE 2024-2025 | 30 |
+| CVE Driven 2026 | 15 |
+| Incident Response | 8 |
+| Mobile Security | 20 |
+| OSINT | 20 |
+| OT/ICS/SCADA | 25 |
+| Threat Hunting | 8 |
+| Web App Security | 16 |
 
 ### Ferramentas Incluídas
 
@@ -201,16 +260,206 @@ O MEU-HERMES inclui o **hermes-cybersec-lab** com:
 
 ---
 
+## 🔧 Skills NousResearch (Novas)
+
+### 🧠 Honcho - Memória Cross-Session
+
+O Honcho permite que o Hermes **lembre de você entre conversas**.
+
+**O que faz:**
+- Aprende quem você é ao longo das sessões
+- Mantém preferências e padrões
+- Cada profile do Hermes tem sua própria identidade
+- Observação bidirecional (usuário e AI)
+
+**Ativação:**
+```bash
+hermes memory setup honcho
+```
+
+**Exemplo:**
+```
+Sessão 1: "Prefiro código em Go" → Honcho salva
+Sessão 2: "Qual linguagem usar?" → Hermes já sabe que você prefere Go
+```
+
+---
+
+### 🔐 1Password - Gerenciamento de Secrets
+
+Gerenciamento seguro de senhas e chaves via CLI.
+
+**Comandos:**
+```bash
+op read "op://Vault/Item/field"    # Ler secret
+op inject -i config.tpl.yml       # Injetar em template
+op run -- sh -c '$DB_PASSWORD'    # Rodar com secrets
+```
+
+---
+
+### 📚 LLM Wiki - Knowledge Base
+
+Sistema de wiki interligado baseado no padrão do Karpathy.
+
+**O que faz:**
+- Constrói base de conhecimento persistente em markdown
+- Cross-references automáticas
+- Deteção de contradições
+- Compatível com Obsidian
+
+**Uso:**
+```
+"Crie uma wiki sobre machine learning"
+"Adicione este artigo à wiki"
+"Consulte a wiki sobre transformers"
+```
+
+---
+
+### 🔍 REST/GraphQL Debug
+
+Debug de APIs REST e GraphQL com diagnóstico em camadas.
+
+**Fluxo:**
+1. Conectividade → 2. TLS → 3. Auth → 4. Request → 5. Response → 6. Semântica
+
+**Comandos:**
+```bash
+rtk curl -v https://api.example.com/users
+rtk git status  # (com RTK ativo)
+```
+
+---
+
+### 📧 Himalaya - Email CLI
+
+Gerenciamento de email via terminal (IMAP/SMTP).
+
+**Comandos:**
+```bash
+himalaya envelope list           # Listar emails
+himalaya message read 42         # Ler email
+himalaya template send           # Enviar email
+```
+
+**Configuração:**
+```bash
+himalaya account configure
+```
+
+---
+
+### ✅ Requesting Code Review
+
+Verificação pré-commit com scan de segurança e auto-fix.
+
+**Pipeline:**
+1. Get diff → 2. Security scan → 3. Tests/lint → 4. Self-review → 5. Reviewer subagent → 6. Auto-fix
+
+**Uso:**
+```
+"Revise este código antes de commitar"
+"Verifique segurança do PR"
+```
+
+---
+
+### 🤖 Codex - Delegação de Código
+
+Delegar tarefas de código para o OpenAI Codex CLI.
+
+**Comandos:**
+```bash
+codex exec "Add dark mode toggle"
+codex exec --full-auto "Refactor auth module"
+```
+
+---
+
+### 📹 Teams Meeting Pipeline
+
+Pipeline de resumos de reuniões do Microsoft Teams.
+
+**Comandos:**
+```bash
+hermes teams-pipeline list               # Reuniões recentes
+hermes teams-pipeline show <job-id>      # Detalhes
+hermes teams-pipeline run <job-id>       # Re-processar
+hermes teams-pipeline validate           # Verificar config
+```
+
+---
+
+### ⚡ RTK - Rust Token Killer
+
+Reduz **60-90% do consumo de tokens** comprimindo saída de comandos.
+
+**Comandos principais:**
+```bash
+rtk git status      # Compacto (15 linhas → 1)
+rtk cargo test      # Só falhas
+rtk docker ps       # Resumido
+rtk gain            # Dashboard de economia
+rtk discover        # Encontrar oportunidades
+```
+
+**Economia atual:** 33.5% (869 comandos analisados)
+
+---
+
+### 🔍 Systematic Debugging
+
+Debug sistemático em 4 fases:
+1. **Causa Raiz** → 2. **Padrão** → 3. **Hipótese** → 4. **Implementação**
+
+**Regra de ouro:** NENHUM fix sem investigação de causa raiz primeiro.
+
+---
+
+### 📋 Kanban Orchestrator/Worker
+
+Sistema multi-agente para decomposição e execução de tarefas.
+
+**Padrões:**
+- Fan-out + fan-in (pesquisa → síntese)
+- Pipeline com gates (planner → implementer → reviewer)
+- Human-in-the-loop
+
+---
+
+### 🎬 Spike
+
+Protótipos descartáveis para validar ideias antes de construir.
+
+**Ciclo:**
+```
+decompose → research → build → verdict
+```
+
+---
+
+### 📺 YouTube Content
+
+Transforma transcrições YouTube em resumos, threads, blog posts.
+
+**Uso:**
+```
+"Resuma este vídeo: https://youtube.com/watch?v=..."
+"Crie um thread sobre este vídeo"
+```
+
+---
+
 ## 💻 Programação
 
 ### Skills de Desenvolvimento
 
-- **opencode-driven-development** - Delegar código ao opencode
-- **systematic-debugging** - Debug sistemático
-- **test-driven-development** - TDD
-- **github** - Gestão de repos
-- **codebase-inspection** - Inspeção de código
-- **requesting-code-review** - Reviews
+- **gsd-core** - Engenharia de contexto para projetos complexos
+- **systematic-debugging** - Debug sistemático em 4 fases
+- **requesting-code-review** - Verificação pré-commit
+- **codex** - Delegação de código ao OpenAI Codex
+- **rest-graphql-debug** - Debug de APIs
 
 ### Integração OpenCode
 
@@ -226,23 +475,11 @@ opencode(action="run", prompt="...", agent="hephaestus")
 opencode(action="run", prompt="...", agent="prometheus")
 ```
 
-### Exemplos de Uso
-
-```
-"Revise este script Python para vulnerabilidades"
-"Implemente autenticação OAuth no meu projeto"
-"Delegue para opencode: criar API REST em Go"
-```
-
 ---
 
 ## 🛠️ GSD Core (Engenharia de Contexto)
 
-O MEU-HERMES inclui suporte ao **GSD Core** para desenvolvimento orientado a especificações com engenharia de contexto avançada.
-
-### O que é?
-
-GSD Core é um framework que resolve **context rot** — a degradação de qualidade que se acumula quando a IA preenche sua janela de contexto. Ele executa trabalho pesado em subagentes com contexto limpo.
+O MEU-HERMES inclui suporte ao **GSD Core** para desenvolvimento orientado a especificações.
 
 ### Ciclo de Fases
 
@@ -251,17 +488,6 @@ GSD Core é um framework que resolve **context rot** — a degradação de quali
 3. **Execute** — Roda planos em paralelo com contexto limpo
 4. **Verify** — Verifica o que foi construído
 5. **Ship** — Cria PR e arquiva a fase
-
-### Instalação
-
-```bash
-# O GSD Core já está instalado globalmente para OpenCode
-# Para verificar:
-ls -la ~/.config/opencode/skills/ | grep gsd
-
-# Para reinstalar se necessário:
-npx @opengsd/gsd-core@latest --opencode --global
-```
 
 ### Comandos disponíveis
 
@@ -275,43 +501,6 @@ npx @opengsd/gsd-core@latest --opencode --global
 | `/gsd-execute-phase` | Executar uma fase |
 | `/gsd-verify-phase` | Verificar uma fase concluída |
 | `/gsd-complete-milestone` | Completar um milestone |
-
-### Quando usar
-
-- **Projetos grandes e complexos** — Muitas partes interdependentes
-- **Contexto ficando grande** — Sessão ficando lenta
-- **Qualidade consistente** — Resultados previsíveis
-- **Teams** — Múltiplas pessoas no mesmo código
-- **Código crítico** — Bugs com alto custo
-
-### Exemplo de uso
-
-```bash
-# Para novo projeto
-cd ~/projects
-mkdir minha-api
-cd minha-api
-git init
-opencode
-# Dentro do OpenCode: /gsd-new-project
-
-# Para projeto existente
-cd ~/meu-repositorio
-opencode
-# Dentro do OpenCode: /gsd-onboard
-```
-
-### Estrutura de arquivos
-
-```
-meu-projeto/
-├── STATE.md           # Estado atual do projeto
-├── CONTEXT.md         # Contexto do projeto
-├── .gsd/              # Diretório do GSD Core
-│   └── phase/         # Fases em andamento
-├── docs/              # Documentação
-└── src/               # Código fonte
-```
 
 ---
 
@@ -327,25 +516,6 @@ meu-projeto/
 | `cleanup-system.sh` | Limpeza do sistema |
 | `security-check.sh` | Verificação de segurança |
 
-### Uso dos Scripts
-
-```bash
-# Briefing matinal
-~/.hermes/scripts/daily-briefing.sh
-
-# Monitoramento em tempo real
-~/.hermes/scripts/monitor-system.sh 5
-
-# Backup de configurações
-~/.hermes/scripts/backup-configs.sh ~/backups/
-
-# Limpeza do sistema
-~/.hermes/scripts/cleanup-system.sh
-
-# Verificação de segurança
-~/.hermes/scripts/security-check.sh
-```
-
 ### Cron Jobs Automáticos
 
 | Horário | Tarefa |
@@ -358,23 +528,11 @@ meu-projeto/
 | 04:00 terça | Atualização do sistema |
 | 22:00 diário | Backup do repositório |
 
-### Exemplos de Uso
-
-```
-"Execute o briefing matinal"
-"Monitore o sistema em tempo real"
-"Faça backup das configurações"
-"Limpe o sistema"
-"Verifique a segurança do sistema"
-```
-
 ---
 
 ## 📚 Pesquisa & Estudos
 
 ### Web Search
-
-O Hermes possui web search integrado para pesquisas:
 
 ```
 "Pesquise últimos CVEs de SQL injection"
@@ -384,18 +542,15 @@ O Hermes possui web search integrado para pesquisas:
 
 ### Skills de Pesquisa
 
-- **arxiv** - Buscar papers acadêmicos
-- **grounded-citations** - Citações fundamentadas
-- **llm-wiki** - Consulta wiki
-- **research** - Pesquisa geral
+- **llm-wiki** - Knowledge base interligada
+- **youtube-content** - Resumos de vídeos
+- **arxiv** - Papers acadêmicos
 
 ---
 
 ## 🧠 Como Usar o OpenCode
 
 ### Tarefas Simples (fire-and-forget)
-
-No Hermes, use a ferramenta `opencode`:
 
 ```
 opencode(action="run", prompt="Criar um script de backup", directory="/home/user")
@@ -407,58 +562,21 @@ opencode(action="run", prompt="Criar um script de backup", directory="/home/user
 opencode(action="session", prompt="Implementar sistema de login", directory="/projeto")
 ```
 
-### Usar agentes específicos
+### Agentes Disponíveis
 
-| Agente | Melhor Para | Como usar |
-|--------|-------------|-----------|
-| *(default)* | Maioria das tarefas | `opencode(action="run", prompt="...")` |
-| `hephaestus` | Implementação profunda | `opencode(action="run", prompt="...", agent="hephaestus")` |
-| `prometheus` | Planejamento estratégico | `opencode(action="run", prompt="...", agent="prometheus")` |
-| `oracle` | Decisões de arquitetura | `opencode(action="run", prompt="...", agent="oracle")` |
-| `atlas` | Execução com checklist | `opencode(action="run", prompt="...", agent="atlas")` |
-
-### Ativar todos os agentes (ultrawork)
-
-Inclua `ultrawork` ou `ulw` no prompt:
-
-```
-opencode(action="run", prompt="ulw Criar API REST completa para gerenciamento de tarefas")
-```
-
-### Comandos úteis do OpenCode
-
-```bash
-# Listar sessões anteriores
-opencode session list
-
-# Verificar uso de tokens
-opencode stats
-
-# Continuar última sessão
-opencode -c
-
-# Continuar sessão específica
-opencode -c <session-id>
-```
+| Agente | Melhor Para |
+|--------|-------------|
+| *(default)* | Maioria das tarefas |
+| `hephaestus` | Implementação profunda |
+| `prometheus` | Planejamento estratégico |
+| `oracle` | Decisões de arquitetura |
+| `atlas` | Execução com checklist |
 
 ---
 
 ## 🔧 Comandos Úteis do Hermes
 
-### Gerenciamento de plugins
-
-```bash
-# Listar plugins
-hermes plugins list
-
-# Habilitar plugin
-hermes plugins enable <nome>
-
-# Desabilitar plugin
-hermes plugins disable <nome>
-```
-
-### Gerenciamento de skills
+### Gerenciamento de Skills
 
 ```bash
 # Listar skills instaladas
@@ -471,46 +589,42 @@ hermes skills install <nome>
 hermes skills search <termo>
 ```
 
-### Backup e restauração
+### Gerenciamento de Memória
+
+```bash
+# Configurar Honcho
+hermes memory setup honcho
+
+# Verificar status
+hermes honcho status
+
+# Sincronizar profiles
+hermes honcho sync
+```
+
+### RTK (Economia de Tokens)
+
+```bash
+# Ver economia
+rtk gain
+
+# Descobrir oportunidades
+rtk discover
+
+# Comandos comprimidos
+rtk git status
+rtk cargo test
+rtk docker ps
+```
+
+### Backup e Restauração
 
 ```bash
 # Criar backup completo
 hermes backup -o ~/hermes-backup.zip
 
-# Criar backup rápido (só configuração)
+# Criar backup rápido
 hermes backup --quick -l "meu-backup"
-
-# Exportar sessões
-hermes sessions export --format jsonl sessions.jsonl
-
-# Importar sessões
-hermes sessions import sessions.jsonl
-```
-
-### MCP (Model Context Protocol)
-
-```bash
-# Adicionar servidor MCP
-hermes mcp add github --preset github
-
-# Listar servidores MCP
-hermes mcp list
-
-# Testar servidor MCP
-hermes mcp test github
-```
-
-### Configuração
-
-```bash
-# Ver configuração atual
-hermes config show
-
-# Editar configuração
-hermes config edit
-
-# Verificar status do sistema
-hermes status
 ```
 
 ---
@@ -560,6 +674,7 @@ cd ~/MEU-HERMES
 # Copiar alterações para o repositório
 cp ~/.hermes/config.yaml .
 cp ~/.hermes/SOUL.md .
+cp -r ~/.hermes/skills/* skills/
 
 # Criar backup da memória
 ./backup-memory.sh
@@ -587,6 +702,26 @@ hermes config edit
 
 ## 🛠️ Solução de Problemas
 
+### RTK não encontrado
+
+```bash
+# Verificar PATH
+rtk --version
+
+# Reinstalar
+winget install rtk-ai.rtk  # Windows
+```
+
+### Honcho não funciona
+
+```bash
+# Verificar status
+hermes honcho status
+
+# Reconfigurar
+hermes memory setup honcho
+```
+
 ### OpenCode não é encontrado
 
 ```bash
@@ -595,9 +730,6 @@ which opencode
 
 # Reinstalar
 npm install -g opencode-ai
-
-# Verificar PATH
-echo $PATH
 ```
 
 ### Plugin opencode não aparece
@@ -611,32 +743,6 @@ hermes plugins enable opencode
 
 # Reiniciar Hermes
 hermes
-```
-
-### Erros de autenticação
-
-```bash
-# Verificar chaves configuradas
-cat ~/.hermes/.env
-
-# Reconfigurar OpenCode
-opencode auth login
-
-# Verificar provedores disponíveis
-opencode auth list
-```
-
-### Hermes não inicia
-
-```bash
-# Verificar logs
-hermes logs
-
-# Executar diagnóstico
-hermes doctor
-
-# Reinstalar se necessário
-curl -fsSL https://hermes.ai/install.sh | bash
 ```
 
 ### Scripts não executam
@@ -663,7 +769,11 @@ MEU-HERMES/
 ├── backup-memory.sh        # Script de backup da memória
 ├── restore-memory.sh       # Script de restauração
 ├── skills/                 # Skills instaladas
-│   └── cybersecurity/      # 2,077 skills de cybersegurança
+│   ├── cybersecurity/      # 2,077 skills de cybersegurança
+│   ├── nousresearch/       # 14 skills NousResearch
+│   ├── obra/               # Skills de workflow
+│   ├── software-development/  # GSD Core
+│   └── rtk/                # RTK Token Killer
 ├── scripts/                # Scripts de automação
 │   ├── daily-briefing.sh   # Briefing matinal
 │   ├── monitor-system.sh   # Monitoramento
@@ -713,14 +823,35 @@ MEU-HERMES/
 
 ## 🌐 Links Úteis
 
-- [Hermes Agent - Documentação](https://hermes.ai/docs)
-- [Hermes Agent - GitHub](https://github.com/NousResearch/hermes-agent)
-- [OpenCode - Site](https://opencode.ai)
-- [OpenCode - GitHub](https://github.com/sst/opencode)
+### Hermes Agent
+- [Documentação](https://hermes.ai/docs)
+- [GitHub](https://github.com/NousResearch/hermes-agent)
+- [Discord](https://discord.gg/hermes)
+- [Skills Hub](https://agentskill.sh/for/hermes)
+
+### Ferramentas
+- [OpenCode](https://opencode.ai)
+- [GSD Core](https://github.com/open-gsd/gsd-core)
+- [RTK](https://github.com/rtk-ai/rtk)
+- [Honcho](https://docs.honcho.dev)
+- [Himalaya](https://github.com/pimalaya/himalaya)
+
+### Ecossistema
 - [oh-my-openagent (OMO)](https://github.com/code-yeongyu/oh-my-openagent)
 - [hermes-cybersec-lab](https://github.com/handnewb/hermes-cybersec-lab)
-- [Hermes Discord](https://discord.gg/hermes)
-- [OpenCode Discord](https://discord.gg/opencode)
+- [NousResearch](https://nousresearch.com)
+
+---
+
+## 📊 Estatísticas
+
+| Métrica | Valor |
+|---------|-------|
+| Total de skills | 2,094 |
+| Skills de segurança | 2,077 |
+| Skills de workflow | 16 |
+| Economia RTK | 33.5% |
+| Comandos analisados | 869 |
 
 ---
 
