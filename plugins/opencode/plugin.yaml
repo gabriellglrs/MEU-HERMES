@@ -1,0 +1,4 @@
+name: opencode
+version: "1.0.0"
+description: OpenCode CLI integration for Hermes (delegate coding tasks via terminal).
+author: MEU-HERMES
