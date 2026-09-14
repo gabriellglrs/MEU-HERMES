@@ -1,0 +1,68 @@
+[tracking]
+enabled = true
+history_days = 90
+
+[display]
+colors = true
+emoji = true
+max_width = 120
+ultra_compact = true
+
+[filters]
+ignore_dirs = [
+    ".git",
+    "node_modules",
+    "target",
+    "__pycache__",
+    ".venv",
+    "vendor",
+    "dist",
+    "build",
+    ".next",
+    "__tests__",
+    "test",
+    "tests",
+    "spec",
+    "coverage",
+    ".cache",
+    ".npm",
+    ".yarn",
+]
+ignore_files = [
+    "*.lock",
+    "*.min.js",
+    "*.min.css",
+    "*.map",
+    "*.pyc",
+    "*.pyo",
+    "*.swp",
+    "*.swo",
+    "*~",
+    "*.log",
+    "*.tmp",
+    "*.temp",
+    "*.bak",
+    "*.orig",
+]
+
+[tee]
+enabled = true
+mode = "failures"
+max_files = 20
+max_file_size = 1048576
+
+[telemetry]
+enabled = true
+consent_given = true
+consent_date = "2026-05-28T14:00:26.466791800+00:00"
+
+[hooks]
+exclude_commands = []
+transparent_prefixes = []
+
+[limits]
+grep_max_results = 50
+grep_max_per_file = 10
+status_max_files = 10
+status_max_untracked = 5
+passthrough_max_chars = 1000
