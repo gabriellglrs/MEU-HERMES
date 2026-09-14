@@ -1,5 +1,5 @@
 {
-  "apiKey": "hch-v3-sj3y3mnd8hld1ntbp4vhtkcxe623thdlzguev99ppkeuwxq5ryt9jxsvs451l27s",
+  "apiKey": "hch-v3-qlio639yifmejw0f722445n8sol3qdbgqyktx25vsj8dig25weoxrrnx11w9o315",
   "peerName": "gabriellucas",
   "aiPeer": "hermes",
   "workspace": "hermes",
@@ -10,9 +10,9 @@
   },
   "writeFrequency": "async",
   "sessionStrategy": "per-directory",
-  "dialecticReasoningLevel": "low",
+  "dialecticReasoningLevel": "medium",
   "dialecticDynamic": true,
-  "dialecticDepth": 1,
+  "dialecticDepth": 2,
   "injectionFrequency": "every-turn",
   "contextCadence": 1,
   "dialecticCadence": 2,
