@@ -61,6 +61,24 @@ Comandos de navegação: `/gsd-next` (roteador state-aware), `/gsd-progress` (st
 - **`.planning/` é trackeado no git** (`commit_docs: true` default). `config.json`, `codebase/`, fases e STATE sempre commitados — é assim que o worktree Orca enxerga o planejamento (worktree herda arquivos trackeados do git).
 - **Orca worktree ≠ projeto.** O worktree (`~/orca/workspaces/<repo>/<nome>`) é checkout isolado para executar; o planejamento continua morando no repo principal. Executor roda com workdir = path do worktree e lê o plano que o Hermes entregou no prompt.
 
+## Comandos GSD no terminal (OBRIGATÓRIO — nunca hand-roll o loop)
+
+O loop Discuss→Plan→Execute→Verify→Ship SÓ anda via comandos próprios do GSD.
+É proibido recriar discuss/plan/execute/verify/ship com prompts manuais de hermes/opencode.
+
+- **GSD CLI (terminal, sempre com `--cwd` = raiz do projeto):**
+  `node $HOME/.agents/gsd-core/bin/gsd-tools.cjs <comando> --cwd <raiz-do-projeto>`
+  Úteis: `smart-entry --json` (diz a situação + próximo passo), `progress`, `stats`,
+  `phase`, `roadmap`, `state`, `uat`, `verification`, `commit`, `worktree`.
+  Validado: `smart-entry` no MEU-HERMES retorna `needs-first-phase` → `discuss-phase`.
+- **Skills `/gsd-*` (fluxos orquestrados):** `/gsd-onboard`, `/gsd-discuss-phase N`,
+  `/gsd-plan-phase N`, `/gsd-execute-phase N`, `/gsd-verify-work N`, `/gsd-ship N`,
+  `/gsd-next`, `/gsd-progress`, `/gsd-quick`. Neste ambiente não há comandos slash
+  instalados no opencode — invocar via skill tool (`~/.agents/skills/gsd-*/SKILL.md`).
+- **Zona manual (só o que o GSD NÃO cobre):** Linear via `orca linear`
+  (create/attach/comment/status set), worktree visível via `orca worktree create --linear-issue`,
+  PRs via `gh`, criação de issue via `hermes -z`. Todo o resto passa pelo GSD.
+
 ## Mapeamento GSD ↔ Linear ↔ Orca (sempre juntos)
 
 - **1 plano GSD = 1 issue Linear.** Hermes cria a issue a partir do `PLAN.md` (título = `[Fase N][Plano M] nome do plano`, descrição com goal + acceptance criteria + link da fase). Guarda o `tracker-id` (ex. `GAB-19`) no plano. Sem fase/plano, sem issue.
