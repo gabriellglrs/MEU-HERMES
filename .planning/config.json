@@ -1,0 +1,25 @@
+{
+  "response_language": "pt",
+  "granularity": "standard",
+  "model_profile": "balanced",
+  "workflow": {
+    "research": true,
+    "plan_check": true,
+    "verifier": true,
+    "auto_advance": false,
+    "use_worktrees": true,
+    "code_review": true,
+    "code_review_point": "execute:post"
+  },
+  "parallelization": {
+    "enabled": true,
+    "plan_level": true,
+    "max_concurrent_agents": 3,
+    "min_plans_for_parallel": 2
+  },
+  "git": {
+    "branching_strategy": "none",
+    "create_tag": true,
+    "phase_branch_template": "gsd/phase-{phase}-{slug}"
+  }
+}
